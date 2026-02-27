@@ -32,7 +32,7 @@ jobs:
          git config --global user.email p.h.ferreirah@gmail.com
          git config --global user.name phferreira
          git status
-         git remote add origin https://${{secrets.commit_secret}}@github.com/phferreira/phferreira.git
+         git remote add origin https://${{secrets.commit_secret}}@github.com/phferreira/phferreira.github.io.git
          git checkout -b gh-pages
          git add --all
          git commit -m "Update from phferreira.git"
