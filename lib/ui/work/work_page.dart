@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phferreira/about/widgets/cursor_digit_widget.dart';
-import 'package:phferreira/contact/widgets/cursor_widget.dart';
+import 'package:phferreira/ui/about/widgets/cursor_digit_widget.dart';
+import 'package:phferreira/ui/contact/widgets/cursor_widget.dart';
 
 class WorkPage extends StatefulWidget {
   const WorkPage({super.key});

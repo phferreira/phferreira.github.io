@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:phferreira/about/about_page.dart';
-import 'package:phferreira/contact/contact_page.dart';
-import 'package:phferreira/experience/experience_page.dart';
-import 'package:phferreira/work/work_page.dart';
-import 'package:phferreira/home/pages.dart';
+import 'package:phferreira/ui/about/about_page.dart';
+import 'package:phferreira/ui/contact/contact_page.dart';
+import 'package:phferreira/ui/experience/experience_page.dart';
+import 'package:phferreira/ui/work/work_page.dart';
+import 'package:phferreira/data/repositories/navigation_repository.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                   child: ListView(
                     children: [
                       for (int pageCount = 0;
-                          pageCount < pages.length;
+                          pageCount < NavigationRepository.items.length;
                           pageCount++)
                         ListTile(
                           selectedColor: const Color(0xFF80955D),
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                           selected: _selectedIndex == pageCount,
                           selectedTileColor: const Color(0xFF80955D),
                           title: Text(
-                            pages[pageCount].label,
+                            NavigationRepository.items[pageCount].label,
                             style: TextStyle(
                               color: _selectedIndex == pageCount
                                   ? Colors.white70
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           leading: Icon(
-                            pages[pageCount].icon,
+                            NavigationRepository.items[pageCount].icon,
                             color: _selectedIndex == pageCount
                                 ? Colors.white70
                                 : const Color(0xFF80955D),
@@ -148,11 +148,11 @@ class _HomePageState extends State<HomePage> {
                   },
                   destinations: [
                     for (int pageCount = 0;
-                        pageCount < pages.length;
+                        pageCount < NavigationRepository.items.length;
                         pageCount++)
                       NavigationRailDestination(
-                        icon: Icon(pages[pageCount].icon),
-                        label: Text(pages[pageCount].label),
+                        icon: Icon(NavigationRepository.items[pageCount].icon),
+                        label: Text(NavigationRepository.items[pageCount].label),
                       )
                   ],
                 ),

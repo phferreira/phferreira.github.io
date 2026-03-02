@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:phferreira/contact/widgets/cursor_widget.dart';
+import 'package:phferreira/ui/contact/widgets/cursor_widget.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
