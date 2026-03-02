@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phferreira/about/widgets/social_media_widget.dart';
-import 'package:phferreira/about/widgets/word_animation_widget.dart';
+import 'package:phferreira/ui/about/widgets/social_media_widget.dart';
+import 'package:phferreira/ui/about/widgets/word_animation_widget.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
