@@ -122,6 +122,7 @@ class _HomePageState extends State<HomePage> {
                   elevation: 9,
                   extended: constraints.maxWidth > 1440.0 || _isExtended,
                   groupAlignment: -1,
+                  trailingAtBottom: true,
                   useIndicator: true,
                   selectedIconTheme: IconThemeData(
                     color: colorScheme.onPrimary,
