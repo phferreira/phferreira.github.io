@@ -5,12 +5,32 @@ import 'package:phferreira/ui/home/home_page.dart';
 
 void main() {
   setUrlStrategy(PathUrlStrategy());
+  runApp(const PortfolioApp());
+}
 
-  runApp(
-    MaterialApp(
+class PortfolioApp extends StatefulWidget {
+  const PortfolioApp({super.key});
+
+  @override
+  State<PortfolioApp> createState() => _PortfolioAppState();
+}
+
+class _PortfolioAppState extends State<PortfolioApp> {
+  AppThemeMode _themeMode = AppThemeMode.light;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       title: 'phferreira',
-      theme: AppTheme.theme,
-      home: const HomePage(),
-    ),
-  );
+      theme: AppTheme.byMode(_themeMode),
+      home: HomePage(
+        currentThemeMode: _themeMode,
+        onThemeChanged: (themeMode) {
+          setState(() {
+            _themeMode = themeMode;
+          });
+        },
+      ),
+    );
+  }
 }

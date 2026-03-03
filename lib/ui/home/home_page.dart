@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:phferreira/core/theme/app_theme.dart';
+import 'package:phferreira/data/repositories/navigation_repository.dart';
 import 'package:phferreira/ui/about/about_page.dart';
 import 'package:phferreira/ui/contact/contact_page.dart';
 import 'package:phferreira/ui/experience/experience_page.dart';
 import 'package:phferreira/ui/work/work_page.dart';
-import 'package:phferreira/data/repositories/navigation_repository.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+    required this.currentThemeMode,
+    required this.onThemeChanged,
+  });
+
+  final AppThemeMode currentThemeMode;
+  final ValueChanged<AppThemeMode> onThemeChanged;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,53 +47,68 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
           appBar: constraints.maxWidth < 480.0
               ? AppBar(
-                  backgroundColor: const Color(0xFF747569),
+                  backgroundColor: colorScheme.surface,
                 )
               : null,
           drawer: constraints.maxWidth < 480.0
               ? Drawer(
-                  backgroundColor: const Color(0xFF747569),
-                  child: ListView(
-                    children: [
-                      for (int pageCount = 0;
-                          pageCount < NavigationRepository.items.length;
-                          pageCount++)
-                        ListTile(
-                          selectedColor: const Color(0xFF80955D),
-                          textColor: const Color(0xFF80955D),
-                          selected: _selectedIndex == pageCount,
-                          selectedTileColor: const Color(0xFF80955D),
-                          title: Text(
-                            NavigationRepository.items[pageCount].label,
-                            style: TextStyle(
-                              color: _selectedIndex == pageCount
-                                  ? Colors.white70
-                                  : const Color(0xFF80955D),
-                            ),
+                  backgroundColor: colorScheme.surface,
+                  child: SafeArea(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView(
+                            children: [
+                              for (int pageCount = 0;
+                                  pageCount < NavigationRepository.items.length;
+                                  pageCount++)
+                                ListTile(
+                                  selected: _selectedIndex == pageCount,
+                                  selectedTileColor: colorScheme.primary,
+                                  title: Text(
+                                    NavigationRepository.items[pageCount].label,
+                                    style: TextStyle(
+                                      color: _selectedIndex == pageCount
+                                          ? colorScheme.onPrimary
+                                          : colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                  leading: Icon(
+                                    NavigationRepository.items[pageCount].icon,
+                                    color: _selectedIndex == pageCount
+                                        ? colorScheme.onPrimary
+                                        : colorScheme.onSurfaceVariant,
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    setState(() {
+                                      _pageController.animateToPage(
+                                        pageCount,
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.linear,
+                                      );
+                                    });
+                                  },
+                                ),
+                            ],
                           ),
-                          leading: Icon(
-                            NavigationRepository.items[pageCount].icon,
-                            color: _selectedIndex == pageCount
-                                ? Colors.white70
-                                : const Color(0xFF80955D),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: _ThemeDropdown(
+                            currentThemeMode: widget.currentThemeMode,
+                            onThemeChanged: widget.onThemeChanged,
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            setState(() {
-                              _pageController.animateToPage(
-                                pageCount,
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.linear,
-                              );
-                            });
-                          },
-                        )
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : null,
@@ -95,23 +118,24 @@ class _HomePageState extends State<HomePage> {
                 visible: constraints.maxWidth >= 480.0,
                 child: NavigationRail(
                   minWidth: 80,
-                  minExtendedWidth: 200,
+                  minExtendedWidth: 230,
                   elevation: 9,
                   extended: constraints.maxWidth > 1440.0 || _isExtended,
+                  groupAlignment: -1,
                   useIndicator: true,
-                  selectedIconTheme: const IconThemeData(
-                    color: Colors.white70,
+                  selectedIconTheme: IconThemeData(
+                    color: colorScheme.onPrimary,
                   ),
                   selectedIndex: _selectedIndex,
-                  selectedLabelTextStyle: const TextStyle(
-                    color: Color(0xFF80955D),
+                  selectedLabelTextStyle: TextStyle(
+                    color: colorScheme.onSurface,
                   ),
-                  backgroundColor: const Color(0xFF747569),
-                  indicatorColor: const Color(0xFF80955D),
+                  backgroundColor: colorScheme.surface,
+                  indicatorColor: colorScheme.primary,
                   unselectedIconTheme:
-                      const IconThemeData(color: Color(0xFF80955D)),
-                  unselectedLabelTextStyle: const TextStyle(
-                    color: Color(0xFF80955D),
+                      IconThemeData(color: colorScheme.onSurfaceVariant),
+                  unselectedLabelTextStyle: TextStyle(
+                    color: colorScheme.onSurfaceVariant,
                   ),
                   leading: Visibility(
                     visible: constraints.maxWidth < 1440.0,
@@ -124,16 +148,22 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.only(right: _isExtended ? 18 : 0),
                       curve: Curves.linear,
                       child: IconButton(
-                        // icon: const Icon(Icons.menu),
                         icon:
                             Icon(_isExtended ? Icons.chevron_left : Icons.menu),
-                        color: const Color(0xFF80955D),
+                        color: colorScheme.onSurfaceVariant,
                         onPressed: () {
                           setState(() {
                             _isExtended = !_isExtended;
                           });
                         },
                       ),
+                    ),
+                  ),
+                  trailing: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: _ThemeDropdown(
+                      currentThemeMode: widget.currentThemeMode,
+                      onThemeChanged: widget.onThemeChanged,
                     ),
                   ),
                   onDestinationSelected: (index) {
@@ -144,7 +174,6 @@ class _HomePageState extends State<HomePage> {
                         curve: Curves.linear,
                       );
                     });
-                    // _selectedIndex = index;
                   },
                   destinations: [
                     for (int pageCount = 0;
@@ -153,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                       NavigationRailDestination(
                         icon: Icon(NavigationRepository.items[pageCount].icon),
                         label: Text(NavigationRepository.items[pageCount].label),
-                      )
+                      ),
                   ],
                 ),
               ),
@@ -179,6 +208,72 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
+    );
+  }
+}
+
+class _ThemeDropdown extends StatelessWidget {
+  const _ThemeDropdown({
+    required this.currentThemeMode,
+    required this.onThemeChanged,
+  });
+
+  final AppThemeMode currentThemeMode;
+  final ValueChanged<AppThemeMode> onThemeChanged;
+
+  String _themeLabel(AppThemeMode mode) {
+    switch (mode) {
+      case AppThemeMode.light:
+        return 'Light';
+      case AppThemeMode.dark:
+        return 'Dark';
+      case AppThemeMode.custom:
+        return 'Custom';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isRailExtended =
+        context.findAncestorWidgetOfExactType<NavigationRail>()?.extended ??
+            true;
+
+    return SizedBox(
+      width: isRailExtended ? 180 : 58,
+      child: DropdownButtonFormField<AppThemeMode>(
+        value: currentThemeMode,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          isDense: true,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        ),
+        icon: const Icon(Icons.palette_outlined),
+        onChanged: (mode) {
+          if (mode != null) {
+            onThemeChanged(mode);
+          }
+        },
+        selectedItemBuilder: (context) {
+          return AppThemeMode.values
+              .map((theme) => Center(
+                    child: isRailExtended
+                        ? Text(_themeLabel(theme))
+                        : const Icon(Icons.palette_outlined),
+                  ))
+              .toList();
+        },
+        items: AppThemeMode.values
+            .map(
+              (theme) => DropdownMenuItem(
+                value: theme,
+                child: Text(_themeLabel(theme)),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }
