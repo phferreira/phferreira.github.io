@@ -105,6 +105,7 @@ class _HomePageState extends State<HomePage> {
                           child: _ThemeDropdown(
                             currentThemeMode: widget.currentThemeMode,
                             onThemeChanged: widget.onThemeChanged,
+                            compact: false,
                           ),
                         ),
                       ],
@@ -165,6 +166,7 @@ class _HomePageState extends State<HomePage> {
                     child: _ThemeDropdown(
                       currentThemeMode: widget.currentThemeMode,
                       onThemeChanged: widget.onThemeChanged,
+                      compact: !(constraints.maxWidth > 1440.0 || _isExtended),
                     ),
                   ),
                   onDestinationSelected: (index) {
@@ -217,10 +219,12 @@ class _ThemeDropdown extends StatelessWidget {
   const _ThemeDropdown({
     required this.currentThemeMode,
     required this.onThemeChanged,
+    required this.compact,
   });
 
   final AppThemeMode currentThemeMode;
   final ValueChanged<AppThemeMode> onThemeChanged;
+  final bool compact;
 
   String _themeLabel(AppThemeMode mode) {
     switch (mode) {
@@ -235,23 +239,21 @@ class _ThemeDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isRailExtended =
-        context.findAncestorWidgetOfExactType<NavigationRail>()?.extended ??
-            true;
-
     return SizedBox(
-      width: isRailExtended ? 180 : 58,
+      width: compact ? 58 : 180,
       child: DropdownButtonFormField<AppThemeMode>(
         value: currentThemeMode,
+        alignment: compact ? Alignment.center : AlignmentDirectional.centerStart,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           isDense: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          contentPadding: compact
+              ? const EdgeInsets.symmetric(vertical: 10)
+              : const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         ),
-        icon: const Icon(Icons.palette_outlined),
+        icon: compact ? const SizedBox.shrink() : const Icon(Icons.palette_outlined),
         onChanged: (mode) {
           if (mode != null) {
             onThemeChanged(mode);
@@ -259,11 +261,14 @@ class _ThemeDropdown extends StatelessWidget {
         },
         selectedItemBuilder: (context) {
           return AppThemeMode.values
-              .map((theme) => Center(
-                    child: isRailExtended
-                        ? Text(_themeLabel(theme))
-                        : const Icon(Icons.palette_outlined),
-                  ))
+              .map(
+                (theme) => Align(
+                  alignment: compact ? Alignment.center : Alignment.centerLeft,
+                  child: compact
+                      ? const Icon(Icons.palette_outlined)
+                      : Text(_themeLabel(theme)),
+                ),
+              )
               .toList();
         },
         items: AppThemeMode.values
