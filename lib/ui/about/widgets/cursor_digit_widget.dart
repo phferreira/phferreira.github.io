@@ -20,9 +20,8 @@ class CursorDigitWidget extends StatefulWidget {
   State<CursorDigitWidget> createState() => _CursorDigitWidgetState();
 }
 
-class _CursorDigitWidgetState extends State<CursorDigitWidget> with TickerProviderStateMixin {
-  late Animation _animationColor;
-  late Animation _animationColorText;
+class _CursorDigitWidgetState extends State<CursorDigitWidget>
+    with TickerProviderStateMixin {
   late CurvedAnimation _curvedAnimation;
 
   @override
@@ -37,9 +36,6 @@ class _CursorDigitWidgetState extends State<CursorDigitWidget> with TickerProvid
     );
 
     widget.controller.forward();
-    _animationColor = ColorTween(begin: Colors.black87, end: Colors.transparent).animate(_curvedAnimation);
-    _animationColorText = ColorTween(begin: Colors.transparent, end: Colors.black87).animate(_curvedAnimation);
-
     widget.controller.addListener(() {
       setState(() {});
     });
@@ -47,25 +43,34 @@ class _CursorDigitWidgetState extends State<CursorDigitWidget> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+
     if (widget.controller.value < widget.begin) {
       return SizedBox(
         height: widget.fontSize * 1.2,
         width: widget.fontSize * 0.7,
       );
     }
+
     return AnimatedBuilder(
       animation: widget.controller,
       builder: (BuildContext context, Widget? child) {
+        final animationValue = _curvedAnimation.value;
+        final animationColor =
+            Color.lerp(onSurface, Colors.transparent, animationValue);
+        final animationColorText =
+            Color.lerp(Colors.transparent, onSurface, animationValue);
+
         return Container(
           height: widget.fontSize * 1.2,
           width: widget.fontSize * 0.7,
-          color: _animationColor.value,
+          color: animationColor,
           child: Text(
             widget.letter,
             style: TextStyle(
               fontFamily: 'RobotoMono',
               fontSize: widget.fontSize,
-              color: _animationColorText.value,
+              color: animationColorText,
             ),
           ),
         );
