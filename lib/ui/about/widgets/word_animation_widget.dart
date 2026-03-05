@@ -66,10 +66,10 @@ class _WordAnimationWidgetState extends State<WordAnimationWidget> with TickerPr
                         fontSize: 18,
                       ),
                     _animationController.isCompleted
-                        ? const FittedBox(
+                        ? FittedBox(
                             fit: BoxFit.fill,
                             child: CursorWidget(
-                              color: Colors.black54,
+                              color: Theme.of(context).colorScheme.onSurface,
                               size: 18,
                             ),
                           )
