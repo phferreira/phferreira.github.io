@@ -22,7 +22,8 @@ jobs:
         
       - name: Run tests
         run: flutter test
-
+        
+      - run: flutter create . --platforms web
       - run: flutter config --enable-web
       - run: flutter pub get
       - run: flutter build web --release
