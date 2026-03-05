@@ -29,6 +29,8 @@ class _WorkPageState extends State<WorkPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) => Center(
@@ -44,10 +46,10 @@ class _WorkPageState extends State<WorkPage> with TickerProviderStateMixin {
                 fontSize: 32,
               ),
             _animationController.isCompleted
-                ? const FittedBox(
+                ? FittedBox(
                     fit: BoxFit.fill,
                     child: CursorWidget(
-                      color: Colors.black54,
+                      color: onSurface,
                       size: 23,
                     ),
                   )

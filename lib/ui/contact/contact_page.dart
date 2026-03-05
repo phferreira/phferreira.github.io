@@ -7,6 +7,19 @@ class ContactPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final terminalHeaderColor = colorScheme.surfaceContainerHighest;
+    final terminalHeaderTextColor = colorScheme.onSurface;
+    final terminalBodyColor = colorScheme.surface;
+    final terminalLineNumberColor = colorScheme.onSurfaceVariant;
+    final terminalLineTextColor = colorScheme.onSurface;
+
+    final terminalMenuStyle = GoogleFonts.notoSansMono(
+      color: terminalHeaderTextColor,
+      fontWeight: FontWeight.w100,
+      fontSize: 12,
+    );
+
     return FittedBox(
       fit: BoxFit.fill,
       child: Container(
@@ -20,7 +33,7 @@ class ContactPage extends StatelessWidget {
           alignment: Alignment.topCenter,
           decoration: BoxDecoration(
             border: Border.all(
-              color: const Color(0xFF353535),
+              color: terminalHeaderColor,
               width: 5,
             ),
             borderRadius: const BorderRadius.only(
@@ -34,7 +47,7 @@ class ContactPage extends StatelessWidget {
             children: [
               Container(
                 height: 44,
-                color: const Color(0xFF353535),
+                color: terminalHeaderColor,
                 padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,9 +55,9 @@ class ContactPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.terminal,
-                          color: Color(0xFFEEEEEC),
+                          color: terminalHeaderTextColor,
                         ),
                         Expanded(
                           child: Text(
@@ -52,44 +65,34 @@ class ContactPage extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.notoSansMono(
-                              color: const Color(0xFFEEEEEC),
-                              fontWeight: FontWeight.w100,
-                              fontSize: 12,
-                            ),
+                            style: terminalMenuStyle,
                           ),
                         ),
-                        Container(
+                        Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Row(
-                            children: const [
+                            children: [
                               Icon(
                                 Icons.arrow_drop_up_outlined,
-                                color: Color(0xFFEEEEEC),
+                                color: terminalHeaderTextColor,
                                 size: 14,
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
+                              const SizedBox(width: 5),
                               Icon(
                                 Icons.minimize_rounded,
-                                color: Color(0xFFEEEEEC),
+                                color: terminalHeaderTextColor,
                                 size: 12,
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
+                              const SizedBox(width: 5),
                               Icon(
                                 Icons.square_outlined,
-                                color: Color(0xFFEEEEEC),
+                                color: terminalHeaderTextColor,
                                 size: 12,
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
+                              const SizedBox(width: 5),
                               Icon(
                                 Icons.close,
-                                color: Color(0xFFEEEEEC),
+                                color: terminalHeaderTextColor,
                                 size: 12,
                               ),
                             ],
@@ -100,59 +103,17 @@ class ContactPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          'File',
-                          style: GoogleFonts.notoSansMono(
-                            color: const Color(0xFFEEEEEC),
-                            fontWeight: FontWeight.w100,
-                            fontSize: 12,
-                          ),
-                        ),
+                        Text('File', style: terminalMenuStyle),
                         const SizedBox(width: 10),
-                        Text(
-                          'Edit',
-                          style: GoogleFonts.notoSansMono(
-                            color: const Color(0xFFEEEEEC),
-                            fontWeight: FontWeight.w100,
-                            fontSize: 12,
-                          ),
-                        ),
+                        Text('Edit', style: terminalMenuStyle),
                         const SizedBox(width: 10),
-                        Text(
-                          'View',
-                          style: GoogleFonts.notoSansMono(
-                            color: const Color(0xFFEEEEEC),
-                            fontWeight: FontWeight.w100,
-                            fontSize: 12,
-                          ),
-                        ),
+                        Text('View', style: terminalMenuStyle),
                         const SizedBox(width: 10),
-                        Text(
-                          style: GoogleFonts.notoSansMono(
-                            color: const Color(0xFFEEEEEC),
-                            fontWeight: FontWeight.w100,
-                            fontSize: 12,
-                          ),
-                          'Terminal',
-                        ),
+                        Text('Terminal', style: terminalMenuStyle),
                         const SizedBox(width: 10),
-                        Text(
-                          style: GoogleFonts.notoSansMono(
-                            color: const Color(0xFFEEEEEC),
-                            fontWeight: FontWeight.w100,
-                            fontSize: 12,
-                          ),
-                          'Tabs',
-                        ),
+                        Text('Tabs', style: terminalMenuStyle),
                         const SizedBox(width: 10),
-                        Text(
-                          style: GoogleFonts.notoSansMono(
-                            color: const Color(0xFFEEEEEC),
-                            fontWeight: FontWeight.w100,
-                            fontSize: 12,
-                          ),
-                          'Help',
-                        ),
+                        Text('Help', style: terminalMenuStyle),
                       ],
                     ),
                   ],
@@ -161,29 +122,29 @@ class ContactPage extends StatelessWidget {
               Expanded(
                 child: Container(
                   alignment: Alignment.topLeft,
-                  color: const Color(0xFF241F31),
+                  color: terminalBodyColor,
                   child: Column(
                     children: [
                       Row(
-                        children: const [
+                        children: [
                           Text.rich(
                             TextSpan(
                               text: '  1 ',
                               style: TextStyle(
-                                color: Colors.white38,
+                                color: terminalLineNumberColor,
                               ),
                               children: [
                                 TextSpan(
                                   text: 'Hello there!',
                                   style: TextStyle(
-                                    color: Colors.white70,
+                                    color: terminalLineTextColor,
                                   ),
                                 ),
                               ],
                             ),
                           ),
                           CursorWidget(
-                            color: Colors.white60,
+                            color: terminalLineTextColor,
                             size: 12,
                           ),
                         ],
