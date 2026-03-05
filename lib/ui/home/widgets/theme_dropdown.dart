@@ -27,7 +27,7 @@ class ThemeDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: compact ? 48 : 180,
+      width: compact ? 50 : 180,
       child: DropdownButtonFormField<AppThemeMode>(
         value: currentThemeMode,
         alignment:
