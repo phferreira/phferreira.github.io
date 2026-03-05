@@ -4,6 +4,7 @@ import 'package:phferreira/data/repositories/navigation_repository.dart';
 import 'package:phferreira/ui/about/about_page.dart';
 import 'package:phferreira/ui/contact/contact_page.dart';
 import 'package:phferreira/ui/experience/experience_page.dart';
+import 'package:phferreira/ui/home/widgets/theme_dropdown.dart';
 import 'package:phferreira/ui/work/work_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(12),
-                          child: _ThemeDropdown(
+                          child: ThemeDropdown(
                             currentThemeMode: widget.currentThemeMode,
                             onThemeChanged: widget.onThemeChanged,
                             compact: false,
@@ -163,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   trailing: Padding(
                     padding: const EdgeInsets.all(12),
-                    child: _ThemeDropdown(
+                    child: ThemeDropdown(
                       currentThemeMode: widget.currentThemeMode,
                       onThemeChanged: widget.onThemeChanged,
                       compact: !(constraints.maxWidth > 1440.0 || _isExtended),
@@ -211,75 +212,6 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
-    );
-  }
-}
-
-class _ThemeDropdown extends StatelessWidget {
-  const _ThemeDropdown({
-    required this.currentThemeMode,
-    required this.onThemeChanged,
-    required this.compact,
-  });
-
-  final AppThemeMode currentThemeMode;
-  final ValueChanged<AppThemeMode> onThemeChanged;
-  final bool compact;
-
-  String _themeLabel(AppThemeMode mode) {
-    switch (mode) {
-      case AppThemeMode.light:
-        return 'Light';
-      case AppThemeMode.dark:
-        return 'Dark';
-      case AppThemeMode.custom:
-        return 'Custom';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: compact ? 58 : 180,
-      child: DropdownButtonFormField<AppThemeMode>(
-        value: currentThemeMode,
-        alignment: compact ? Alignment.center : AlignmentDirectional.centerStart,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          isDense: true,
-          contentPadding: compact
-              ? const EdgeInsets.symmetric(vertical: 10)
-              : const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        ),
-        icon: compact ? const SizedBox.shrink() : const Icon(Icons.palette_outlined),
-        onChanged: (mode) {
-          if (mode != null) {
-            onThemeChanged(mode);
-          }
-        },
-        selectedItemBuilder: (context) {
-          return AppThemeMode.values
-              .map(
-                (theme) => Align(
-                  alignment: compact ? Alignment.center : Alignment.centerLeft,
-                  child: compact
-                      ? const Icon(Icons.palette_outlined)
-                      : Text(_themeLabel(theme)),
-                ),
-              )
-              .toList();
-        },
-        items: AppThemeMode.values
-            .map(
-              (theme) => DropdownMenuItem(
-                value: theme,
-                child: Text(_themeLabel(theme)),
-              ),
-            )
-            .toList(),
-      ),
     );
   }
 }
