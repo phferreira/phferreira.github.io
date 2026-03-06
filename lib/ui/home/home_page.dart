@@ -53,12 +53,12 @@ class _HomePageState extends State<HomePage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-          appBar: constraints.maxWidth < 480.0
+          appBar: constraints.maxWidth <= 480.0
               ? AppBar(
                   backgroundColor: colorScheme.surface,
                 )
               : null,
-          drawer: constraints.maxWidth < 480.0
+          drawer: constraints.maxWidth <= 480.0
               ? Drawer(
                   backgroundColor: colorScheme.surface,
                   child: SafeArea(
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
           body: Row(
             children: [
               Visibility(
-                visible: constraints.maxWidth >= 480.0,
+                visible: constraints.maxWidth > 480.0,
                 child: NavigationRail(
                   minWidth: 80,
                   minExtendedWidth: 230,
