@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                     color: colorScheme.onSurfaceVariant,
                   ),
                   leading: Visibility(
-                    visible: !isDesktop,
+                    visible: !isPhone,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       width: _isExtended ? 200 : 80,
@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                     child: ThemeDropdown(
                       currentThemeMode: widget.currentThemeMode,
                       onThemeChanged: widget.onThemeChanged,
-                      compact: !(isDesktop || _isExtended),
+                      compact: !_isExtended,
                     ),
                   ),
                   onDestinationSelected: (index) {
