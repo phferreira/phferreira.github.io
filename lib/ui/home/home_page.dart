@@ -23,7 +23,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   static const double _phoneBreakpoint = 600;
-  static const double _desktopBreakpoint = 1024;
 
   int _selectedIndex = 0;
   bool _isExtended = false;
@@ -55,19 +54,13 @@ class _HomePageState extends State<HomePage> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final isPhone = width < _phoneBreakpoint;
-        final isTablet =
-            width >= _phoneBreakpoint && width < _desktopBreakpoint;
-        final isDesktop = width >= _desktopBreakpoint;
+        final isMobile = constraints.maxWidth < _phoneBreakpoint;
 
         return Scaffold(
-          appBar: isPhone
-              ? AppBar(
-                  backgroundColor: colorScheme.surface,
-                )
+          appBar: isMobile
+              ? AppBar(backgroundColor: colorScheme.surface)
               : null,
-          drawer: isPhone
+          drawer: isMobile
               ? Drawer(
                   backgroundColor: colorScheme.surface,
                   child: SafeArea(
@@ -76,9 +69,11 @@ class _HomePageState extends State<HomePage> {
                         Expanded(
                           child: ListView(
                             children: [
-                              for (int pageCount = 0;
-                                  pageCount < NavigationRepository.items.length;
-                                  pageCount++)
+                              for (
+                                int pageCount = 0;
+                                pageCount < NavigationRepository.items.length;
+                                pageCount++
+                              )
                                 ListTile(
                                   selected: _selectedIndex == pageCount,
                                   selectedTileColor: colorScheme.primary,
@@ -126,7 +121,7 @@ class _HomePageState extends State<HomePage> {
           body: Row(
             children: [
               Visibility(
-                visible: isTablet || isDesktop,
+                visible: !isMobile,
                 child: NavigationRail(
                   minWidth: 80,
                   minExtendedWidth: 230,
@@ -144,18 +139,20 @@ class _HomePageState extends State<HomePage> {
                   ),
                   backgroundColor: colorScheme.surface,
                   indicatorColor: colorScheme.primary,
-                  unselectedIconTheme:
-                      IconThemeData(color: colorScheme.onSurfaceVariant),
+                  unselectedIconTheme: IconThemeData(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                   unselectedLabelTextStyle: TextStyle(
                     color: colorScheme.onSurfaceVariant,
                   ),
                   leading: Visibility(
-                    visible: !isPhone,
+                    visible: !isMobile,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       width: _isExtended ? 200 : 80,
-                      alignment:
-                          _isExtended ? Alignment.centerRight : Alignment.center,
+                      alignment: _isExtended
+                          ? Alignment.centerRight
+                          : Alignment.center,
                       padding: EdgeInsets.only(right: _isExtended ? 18 : 0),
                       curve: Curves.linear,
                       child: IconButton(
@@ -189,12 +186,16 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                   destinations: [
-                    for (int pageCount = 0;
-                        pageCount < NavigationRepository.items.length;
-                        pageCount++)
+                    for (
+                      int pageCount = 0;
+                      pageCount < NavigationRepository.items.length;
+                      pageCount++
+                    )
                       NavigationRailDestination(
                         icon: Icon(NavigationRepository.items[pageCount].icon),
-                        label: Text(NavigationRepository.items[pageCount].label),
+                        label: Text(
+                          NavigationRepository.items[pageCount].label,
+                        ),
                       ),
                   ],
                 ),
