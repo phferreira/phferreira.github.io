@@ -33,16 +33,6 @@ class _HomePageState extends State<HomePage> {
   );
 
   @override
-  void initState() {
-    super.initState();
-    _pageController.addListener(() {
-      setState(() {
-        _selectedIndex = _pageController.page!.round();
-      });
-    });
-  }
-
-  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
@@ -93,13 +83,12 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   onTap: () {
                                     Navigator.pop(context);
-                                    setState(() {
-                                      _pageController.animateToPage(
-                                        pageCount,
-                                        duration: const Duration(seconds: 1),
-                                        curve: Curves.linear,
-                                      );
-                                    });
+
+                                    _pageController.animateToPage(
+                                      pageCount,
+                                      duration: const Duration(seconds: 1),
+                                      curve: Curves.linear,
+                                    );
                                   },
                                 ),
                             ],
@@ -177,13 +166,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onDestinationSelected: (index) {
-                    setState(() {
-                      _pageController.animateToPage(
-                        index,
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.linear,
-                      );
-                    });
+                    _pageController.animateToPage(
+                      index,
+                      duration: const Duration(seconds: 1),
+                      curve: Curves.linear,
+                    );
                   },
                   destinations: [
                     for (
@@ -208,7 +195,10 @@ class _HomePageState extends State<HomePage> {
                   child: PageView(
                     scrollDirection: Axis.vertical,
                     controller: _pageController,
-                    pageSnapping: false,
+                    onPageChanged: (index) {
+                      setState(() => _selectedIndex = index);
+                    },
+                    pageSnapping: constraints.maxWidth <= 480.0,
                     children: const [
                       AboutPage(),
                       ExperiencePage(),
