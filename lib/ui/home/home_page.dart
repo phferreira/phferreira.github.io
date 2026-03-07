@@ -61,30 +61,6 @@ class _HomePageState extends State<HomePage> {
             width >= _phoneBreakpoint && width < _desktopBreakpoint;
         final isDesktop = width >= _desktopBreakpoint;
 
-        if (isDesktop && !_isExtended) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!mounted) {
-              return;
-            }
-
-            setState(() {
-              _isExtended = true;
-            });
-          });
-        }
-
-        if (isTablet && _isExtended && !isDesktop) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!mounted) {
-              return;
-            }
-
-            setState(() {
-              _isExtended = false;
-            });
-          });
-        }
-
         return Scaffold(
           appBar: isPhone
               ? AppBar(
