@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   static const double _desktopBreakpoint = 1024;
 
   int _selectedIndex = 0;
+  bool _isExtended = false;
 
   final PageController _pageController = PageController(
     initialPage: 0,
@@ -59,6 +60,7 @@ class _HomePageState extends State<HomePage> {
         final isTablet =
             width >= _phoneBreakpoint && width < _desktopBreakpoint;
         final isDesktop = width >= _desktopBreakpoint;
+        final isMobile = isPhone;
 
         return Scaffold(
           appBar: isPhone
@@ -130,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                   minWidth: 80,
                   minExtendedWidth: 230,
                   elevation: 9,
-                  extended: isDesktop,
+                  extended: isDesktop || _isExtended,
                   groupAlignment: -1,
                   trailingAtBottom: true,
                   useIndicator: true,
@@ -148,12 +150,38 @@ class _HomePageState extends State<HomePage> {
                   unselectedLabelTextStyle: TextStyle(
                     color: colorScheme.onSurfaceVariant,
                   ),
+                  leading: Visibility(
+                    visible: !isMobile,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: _isExtended ? 200 : 80,
+                      alignment:
+                          _isExtended ? Alignment.centerRight : Alignment.center,
+                      padding: EdgeInsets.only(right: _isExtended ? 18 : 0),
+                      curve: Curves.linear,
+                      child: IconButton(
+                        icon: Icon(
+                          _isExtended ? Icons.chevron_left : Icons.menu,
+                        ),
+                        color: colorScheme.onSurfaceVariant,
+                        onPressed: () {
+                          if (isDesktop) {
+                            return;
+                          }
+
+                          setState(() {
+                            _isExtended = !_isExtended;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                   trailing: Padding(
                     padding: const EdgeInsets.all(12),
                     child: ThemeDropdown(
                       currentThemeMode: widget.currentThemeMode,
                       onThemeChanged: widget.onThemeChanged,
-                      compact: !isDesktop,
+                      compact: !(isDesktop || _isExtended),
                     ),
                   ),
                   onDestinationSelected: (index) {
