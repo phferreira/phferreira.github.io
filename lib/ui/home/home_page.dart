@@ -22,8 +22,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static const double _phoneBreakpoint = 600;
+  static const double _desktopBreakpoint = 1024;
+
   int _selectedIndex = 0;
-  bool _isExtended = false;
 
   final PageController _pageController = PageController(
     initialPage: 0,
@@ -52,13 +54,19 @@ class _HomePageState extends State<HomePage> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final isPhone = width < _phoneBreakpoint;
+        final isTablet =
+            width >= _phoneBreakpoint && width < _desktopBreakpoint;
+        final isDesktop = width >= _desktopBreakpoint;
+
         return Scaffold(
-          appBar: constraints.maxWidth <= 480.0
+          appBar: isPhone
               ? AppBar(
                   backgroundColor: colorScheme.surface,
                 )
               : null,
-          drawer: constraints.maxWidth <= 480.0
+          drawer: isPhone
               ? Drawer(
                   backgroundColor: colorScheme.surface,
                   child: SafeArea(
@@ -117,12 +125,12 @@ class _HomePageState extends State<HomePage> {
           body: Row(
             children: [
               Visibility(
-                visible: constraints.maxWidth > 480.0,
+                visible: isTablet || isDesktop,
                 child: NavigationRail(
                   minWidth: 80,
                   minExtendedWidth: 230,
                   elevation: 9,
-                  extended: constraints.maxWidth > 1440.0 || _isExtended,
+                  extended: isDesktop,
                   groupAlignment: -1,
                   trailingAtBottom: true,
                   useIndicator: true,
@@ -140,34 +148,12 @@ class _HomePageState extends State<HomePage> {
                   unselectedLabelTextStyle: TextStyle(
                     color: colorScheme.onSurfaceVariant,
                   ),
-                  leading: Visibility(
-                    visible: constraints.maxWidth < 1440.0,
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      width: _isExtended ? 200 : 80,
-                      alignment: _isExtended
-                          ? Alignment.centerRight
-                          : Alignment.center,
-                      padding: EdgeInsets.only(right: _isExtended ? 18 : 0),
-                      curve: Curves.linear,
-                      child: IconButton(
-                        icon:
-                            Icon(_isExtended ? Icons.chevron_left : Icons.menu),
-                        color: colorScheme.onSurfaceVariant,
-                        onPressed: () {
-                          setState(() {
-                            _isExtended = !_isExtended;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
                   trailing: Padding(
                     padding: const EdgeInsets.all(12),
                     child: ThemeDropdown(
                       currentThemeMode: widget.currentThemeMode,
                       onThemeChanged: widget.onThemeChanged,
-                      compact: !(constraints.maxWidth > 1440.0 || _isExtended),
+                      compact: !isDesktop,
                     ),
                   ),
                   onDestinationSelected: (index) {
