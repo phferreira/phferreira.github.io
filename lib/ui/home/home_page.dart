@@ -60,7 +60,30 @@ class _HomePageState extends State<HomePage> {
         final isTablet =
             width >= _phoneBreakpoint && width < _desktopBreakpoint;
         final isDesktop = width >= _desktopBreakpoint;
-        final isMobile = isPhone;
+
+        if (isDesktop && !_isExtended) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) {
+              return;
+            }
+
+            setState(() {
+              _isExtended = true;
+            });
+          });
+        }
+
+        if (isTablet && _isExtended && !isDesktop) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) {
+              return;
+            }
+
+            setState(() {
+              _isExtended = false;
+            });
+          });
+        }
 
         return Scaffold(
           appBar: isPhone
@@ -132,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                   minWidth: 80,
                   minExtendedWidth: 230,
                   elevation: 9,
-                  extended: isDesktop || _isExtended,
+                  extended: _isExtended,
                   groupAlignment: -1,
                   trailingAtBottom: true,
                   useIndicator: true,
@@ -151,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                     color: colorScheme.onSurfaceVariant,
                   ),
                   leading: Visibility(
-                    visible: !isMobile,
+                    visible: !isDesktop,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       width: _isExtended ? 200 : 80,
@@ -165,10 +188,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                         color: colorScheme.onSurfaceVariant,
                         onPressed: () {
-                          if (isDesktop) {
-                            return;
-                          }
-
                           setState(() {
                             _isExtended = !_isExtended;
                           });
