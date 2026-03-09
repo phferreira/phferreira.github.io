@@ -10,6 +10,8 @@ This project is a personal website built with **Flutter Web** (Dart), published 
 - Use **idiomatic Dart** and prioritize readability over overly complex solutions.
 - Prefer small, reusable widgets; avoid putting too much logic directly inside `build`.
 - Keep consistency with `analysis_options.yaml` and run `dart format` on changed files.
+- Every code change must include or update **unit tests** that validate the altered behavior.
+- Prioritize **TDD (Test Driven Development)**: write a failing test first, implement the change, and then refactor while keeping tests green.
 - For relevant visual changes, validate locally on web (`flutter run -d chrome`) and include evidence when possible.
 
 ## Architecture standard
@@ -31,9 +33,10 @@ This project is a personal website built with **Flutter Web** (Dart), published 
 
 ## Feature workflow
 For new features:
-1. implement UI/behavior in the appropriate layer;
-2. add/update tests in `test/`;
-3. run `flutter test` before finishing.
+1. start with a failing automated test (preferably unit test) that describes the expected behavior;
+2. implement UI/behavior in the appropriate layer;
+3. add/update tests in `test/` to fully cover the change, ensuring at least one unit test for affected logic;
+4. run `flutter test` before finishing.
 
 ## Quality checklist
 Before completing changes, try to run:
